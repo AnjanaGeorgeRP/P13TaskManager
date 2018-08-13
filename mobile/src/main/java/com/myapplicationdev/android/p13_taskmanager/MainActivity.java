@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
             View viewDialog = inflater.inflate(R.layout.edit_dialog, null);
             final EditText etName = (EditText)viewDialog.findViewById(R.id.etName);
             final EditText etDesc = (EditText)viewDialog.findViewById(R.id.etDescription);
-            final EditText etTime = (EditText)viewDialog.findViewById(R.id.etTime);
 
             etName.setText(task.getName());
             etDesc.setText(task.getDescription());
