@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.RemoteInput;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +41,23 @@ public class MainActivity extends AppCompatActivity {
 
         lv = (ListView) findViewById(R.id.lv);
         btnAdd = (Button) findViewById(R.id.btnAdd);
+
+        CharSequence reply = null;
+        Intent intent = getIntent();
+        int taskId = intent.getIntExtra("id",-1);
+        Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+        if (remoteInput != null){
+            reply = remoteInput.getCharSequence("status");
+        }
+
+        if(reply != null){
+            String complete = String.valueOf(reply);
+            if(complete.equalsIgnoreCase("Completed")){
+                DBHelper dbh = new DBHelper(MainActivity.this);
+                dbh.deleteTask(taskId);
+                dbh.close();
+            }
+        }
 
         DBHelper dbh = new DBHelper(this);
         tasks = dbh.getAllTasks();

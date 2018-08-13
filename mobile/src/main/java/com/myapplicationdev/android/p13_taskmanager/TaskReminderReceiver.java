@@ -45,7 +45,7 @@ public class TaskReminderReceiver extends BroadcastReceiver {
 				pIntent).build();
 
 		//Reply
-        Intent intentreply = new Intent(context, ReplyActivity.class);
+        Intent intentreply = new Intent(context, MainActivity.class);
         intentreply.putExtra("id",id);
         PendingIntent pendingIntentReply = PendingIntent.getActivity
                 (context, notifReqCode, intentreply,
@@ -64,11 +64,29 @@ public class TaskReminderReceiver extends BroadcastReceiver {
                 .addRemoteInput(ri)
                 .build();
 
+        //Add Task
+        Intent intentAdd = new Intent(context, AddActivity.class);
+        PendingIntent pendingIntentAdd = PendingIntent.getActivity
+                (context, notifReqCode, intentAdd,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
 
+        RemoteInput riAdd = new RemoteInput.Builder("add")
+                .setLabel("Add New Task")
+                .setChoices(new String [] {"", "New Task"})
+                .build();
+
+        NotificationCompat.Action action3 = new
+                NotificationCompat.Action.Builder(
+                R.mipmap.ic_launcher,
+                "Add",
+                pendingIntentAdd)
+                .addRemoteInput(riAdd)
+                .build();
         NotificationCompat.WearableExtender extender = new
 				NotificationCompat.WearableExtender();
 		extender.addAction(action);
 		extender.addAction(action2);
+		extender.addAction(action3);
 
 		// build notification
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
